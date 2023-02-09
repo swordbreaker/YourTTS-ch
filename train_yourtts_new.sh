@@ -16,5 +16,6 @@ ml CUDA/11.7.0
 ml Miniconda2/4.3.30
 source activate tts
 
+export TRAINER_TELEMETRY=0
 export CUDA_VISIBLE_DEVICES=0
 python train_yourtts_new.py
