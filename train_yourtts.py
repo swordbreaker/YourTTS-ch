@@ -71,7 +71,7 @@ vitsArgs = VitsArgs(
 # config.model_args = vitsArgs
 
 config = VitsConfig(
-    run_name = "swissDial_proto",
+    run_name = "swissDial_only_ch",
     phoneme_language = "ch_DE",
     output_path = output_path,
     phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
