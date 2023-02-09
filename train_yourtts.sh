@@ -18,4 +18,5 @@ source activate tts
 
 export CUDA_VISIBLE_DEVICES=1,2,3,4
 python -m trainer.distribute --script train_yourtts.py \
+    --config_path  /scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/config.json \
     --restore_path  /scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/model_file.pth

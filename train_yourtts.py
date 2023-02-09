@@ -15,6 +15,8 @@ from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 import json
 
+os.environ["NCCL_DEBUG"] = "INFO"
+
 PretrainedModelPath = ""
 if platform == "linux" or platform == "linux2":
     PretrainedModelPath = "/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/"
@@ -57,16 +59,29 @@ vitsArgs = VitsArgs(
     use_sdp=False,
 )
 
-with open(f"{PretrainedModelPath}config.json") as f:
-    json_config = json.load(f)
+# with open(f"{PretrainedModelPath}config.json") as f:
+#     json_config = json.load(f)
 
-config = VitsConfig(**json_config)
+# config = VitsConfig(**json_config)
 
-config.run_name = "swissDial_proto"
-config.phoneme_language = "ch_DE"
-config.output_path = output_path
-config.phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
-config.model_args = vitsArgs
+# config.run_name = "swissDial_proto"
+# config.phoneme_language = "ch_DE"
+# config.output_path = output_path
+# config.phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
+# config.model_args = vitsArgs
+
+config = VitsConfig(
+    run_eval_steps= "swissDial_proto",
+    phoneme_language = "ch_DE",
+    output_path = output_path,
+    phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
+    model_args = vitsArgs,
+    audio= audio_config,
+    datasets=dataset_config,
+    test_sentences=[
+        ["Das isch e tescht.", "gr", None, "ch_DE"],
+    ],
+)
 
 # config = VitsConfig(
 #     model_args=vitsArgs,
