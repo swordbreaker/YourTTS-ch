@@ -14,6 +14,8 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 
+os.environ["TRAINER_TELEMETRY"] = "0"
+
 PretrainedModelPath = ""
 if platform == "linux" or platform == "linux2":
     PretrainedModelPath = "/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/"
