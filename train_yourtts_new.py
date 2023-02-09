@@ -14,8 +14,6 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 
-os.environ["NCCL_DEBUG"] = "INFO"
-
 PretrainedModelPath = ""
 if platform == "linux" or platform == "linux2":
     PretrainedModelPath = "/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/"
@@ -52,8 +50,8 @@ audio_config = VitsAudioConfig(
 )
 
 vitsArgs = VitsArgs(
-    use_language_embedding=True,
-    embedded_language_dim=4,
+    use_language_embedding=False,
+    # embedded_language_dim=4,
     use_speaker_embedding=True,
     use_sdp=False,
 )
@@ -71,7 +69,7 @@ config = VitsConfig(
     run_eval=True,
     test_delay_epochs=-1,
     epochs=1000,
-    text_cleaner="multilingual_cleaners",
+    text_cleaner=None,
     use_phonemes=False,
     phoneme_language="ch-de",
     phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
@@ -117,23 +115,23 @@ train_samples, eval_samples = load_tts_samples(
 # init speaker manager for multi-speaker training
 # it maps speaker-id to speaker-name in the model and data-loader
 speaker_manager = SpeakerManager()
-speaker_manager.load_ids_from_file(f"{PretrainedModelPath}speakers.json")
-speaker_manager.name_to_id.update(speaker_manager.parse_ids_from_data(train_samples + eval_samples, parse_key="speaker_name"))
+speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
 
 config.model_args.num_speakers = speaker_manager.num_speakers
 
-language_manager = LanguageManager(config=config)
-language_manager.name_to_id
-language_manager.name_to_id['ch_DE'] = language_manager.num_languages
-config.model_args.num_languages = language_manager.num_languages
+# language_manager = LanguageManager(config=config)
+# language_manager.name_to_id
+# language_manager.name_to_id['ch_DE'] = language_manager.num_languages
+# config.model_args.num_languages = language_manager.num_languages
 
 # INITIALIZE THE TOKENIZER
 # Tokenizer is used to convert text to sequences of token IDs.
 # config is updated with the default characters if not defined in the config.
+
 tokenizer, config = TTSTokenizer.init_from_config(config)
 
 # init model
-model = Vits(config, ap, tokenizer, speaker_manager, language_manager)
+model = Vits(config, ap, tokenizer, speaker_manager)
 
 # init the trainer and 🚀
 trainer = Trainer(
