@@ -17,4 +17,4 @@ ml Miniconda2/4.3.30
 source activate tts
 
 export CUDA_VISIBLE_DEVICES=1
-python train_yourtts.py
+python train_yourtts_new.py
