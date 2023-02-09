@@ -147,6 +147,8 @@ speaker_manager.name_to_id.update(speaker_manager.parse_ids_from_data(train_samp
 config.model_args.num_speakers = speaker_manager.num_speakers
 
 language_manager = LanguageManager(config=config)
+language_manager.name_to_id
+language_manager.name_to_id['ch_DE'] = language_manager.num_languages
 config.model_args.num_languages = language_manager.num_languages
 
 # INITIALIZE THE TOKENIZER
