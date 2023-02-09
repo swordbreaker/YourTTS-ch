@@ -11,6 +11,7 @@ from TTS.tts.utils.languages import LanguageManager
 from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
+import json
 
 
 def formatter(root_path, manifest_file, **kwargs):  # pylint: disable=unused-argument
@@ -33,7 +34,7 @@ output_path = os.path.dirname(os.path.abspath(__file__))
 dataset_config = [BaseDatasetConfig(language="ch_DE", path="data/swissDial/", meta_file_train="metadata.txt")]
 
 audio_config = VitsAudioConfig(
-    sample_rate=16000,
+    sample_rate=22050,
     win_length=1024,
     hop_length=256,
     num_mels=80,
@@ -48,60 +49,70 @@ vitsArgs = VitsArgs(
     use_sdp=False,
 )
 
-config = VitsConfig(
-    model_args=vitsArgs,
-    audio=audio_config,
-    run_name="swissDial_proto",
-    use_speaker_embedding=True,
-    batch_size=32,
-    eval_batch_size=16,
-    batch_group_size=0,
-    num_loader_workers=4,
-    num_eval_loader_workers=4,
-    run_eval=True,
-    test_delay_epochs=-1,
-    epochs=1000,
-    text_cleaner="multilingual_cleaners",
-    use_phonemes=False,
-    phoneme_language="ch-de",
-    phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
-    compute_input_seq_cache=True,
-    print_step=25,
-    use_language_weighted_sampler=True,
-    print_eval=False,
-    mixed_precision=False,
-    min_audio_len=32 * 256 * 4,
-    max_audio_len=160000,
-    output_path=output_path,
-    datasets=dataset_config,
-    characters=CharactersConfig(
-        characters_class="TTS.tts.models.vits.VitsCharacters",
-        pad="<PAD>",
-        eos="<EOS>",
-        bos="<BOS>",
-        blank="<BLNK>",
-        characters="!¡'(),-.:;¿?abcdefghijklmnopqrstuvwxyzµßàáâäåæçèéêëìíîïñòóôöùúûüąćęłńœśşźżƒабвгдежзийклмнопрстуфхцчшщъыьэюяёєіїґӧ «°±µ»$%&‘’‚“`”„",
-        punctuations="!¡'(),-.:;¿? ",
-        phonemes=None,
-    ),
-    test_sentences=[
-        [
-            "It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.",
-            "mary_ann",
-            None,
-            "en_US",
-        ],
-        [
-            "Il m'a fallu beaucoup de temps pour d\u00e9velopper une voix, et maintenant que je l'ai, je ne vais pas me taire.",
-            "ezwa",
-            None,
-            "fr_FR",
-        ],
-        ["Ich finde, dieses Startup ist wirklich unglaublich.", "eva_k", None, "de_DE"],
-        ["Я думаю, что этот стартап действительно удивительный.", "oblomov", None, "ru_RU"],
-        ["Das isch e tescht.", "gr", None, "ch_DE"],
-    ],
-)
+with open("/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/config.json") as f:
+    json_config = json.load(f)
+
+config = VitsConfig(**json_config)
+
+config.run_name = "swissDial_proto"
+config.phoneme_language = "ch_DE"
+config.output_path = output_path
+config.phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
+
+# config = VitsConfig(
+#     model_args=vitsArgs,
+#     audio=audio_config,
+#     run_name="swissDial_proto",
+#     use_speaker_embedding=True,
+#     batch_size=32,
+#     eval_batch_size=16,
+#     batch_group_size=0,
+#     num_loader_workers=4,
+#     num_eval_loader_workers=4,
+#     run_eval=True,
+#     test_delay_epochs=-1,
+#     epochs=1000,
+#     text_cleaner="multilingual_cleaners",
+#     use_phonemes=False,
+#     phoneme_language="ch-de",
+#     phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
+#     compute_input_seq_cache=True,
+#     print_step=25,
+#     use_language_weighted_sampler=True,
+#     print_eval=False,
+#     mixed_precision=False,
+#     min_audio_len=32 * 256 * 4,
+#     max_audio_len=160000,
+#     output_path=output_path,
+#     datasets=dataset_config,
+#     characters=CharactersConfig(
+#         characters_class="TTS.tts.models.vits.VitsCharacters",
+#         pad="<PAD>",
+#         eos="<EOS>",
+#         bos="<BOS>",
+#         blank="<BLNK>",
+#         characters="!¡'(),-.:;¿?abcdefghijklmnopqrstuvwxyzµßàáâäåæçèéêëìíîïñòóôöùúûüąćęłńœśşźżƒабвгдежзийклмнопрстуфхцчшщъыьэюяёєіїґӧ «°±µ»$%&‘’‚“`”„",
+#         punctuations="!¡'(),-.:;¿? ",
+#         phonemes=None,
+#     ),
+#     test_sentences=[
+#         [
+#             "It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.",
+#             "mary_ann",
+#             None,
+#             "en_US",
+#         ],
+#         [
+#             "Il m'a fallu beaucoup de temps pour d\u00e9velopper une voix, et maintenant que je l'ai, je ne vais pas me taire.",
+#             "ezwa",
+#             None,
+#             "fr_FR",
+#         ],
+#         ["Ich finde, dieses Startup ist wirklich unglaublich.", "eva_k", None, "de_DE"],
+#         ["Я думаю, что этот стартап действительно удивительный.", "oblomov", None, "ru_RU"],
+#         ["Das isch e tescht.", "gr", None, "ch_DE"],
+#     ],
+# )
 
 # force the convertion of the custom characters to a config attribute
 config.from_dict(config.to_dict())
