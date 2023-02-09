@@ -1,5 +1,7 @@
 import os
 from glob import glob
+from sys import platform
+
 
 from trainer import Trainer, TrainerArgs
 
@@ -12,6 +14,12 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 import json
+
+PretrainedModelPath = ""
+if platform == "linux" or platform == "linux2":
+    PretrainedModelPath = "/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/"
+else:
+    PretrainedModelPath = "C:/Users/tobia/AppData/Local/tts/tts_models--multilingual--multi-dataset--your_tts/"
 
 
 def formatter(root_path, manifest_file, **kwargs):  # pylint: disable=unused-argument
@@ -49,7 +57,7 @@ vitsArgs = VitsArgs(
     use_sdp=False,
 )
 
-with open("/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/config.json") as f:
+with open(f"{PretrainedModelPath}config.json") as f:
     json_config = json.load(f)
 
 config = VitsConfig(**json_config)
@@ -133,7 +141,8 @@ train_samples, eval_samples = load_tts_samples(
 # init speaker manager for multi-speaker training
 # it maps speaker-id to speaker-name in the model and data-loader
 speaker_manager = SpeakerManager()
-speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
+speaker_manager.load_ids_from_file(f"{PretrainedModelPath}speakers.json")
+# speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
 config.model_args.num_speakers = speaker_manager.num_speakers
 
 language_manager = LanguageManager(config=config)
