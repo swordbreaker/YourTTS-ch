@@ -12,7 +12,8 @@
 
 #export TF_FORCE_GPU_ALLOW_GROWTH=true
 
-ml CUDA/11.7.0
+ml cuDNN/8.2.1.32-CUDA-11.3.1
+# ml CUDA/11.7.0
 ml Miniconda2/4.3.30
 source activate tts
 
