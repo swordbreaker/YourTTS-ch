@@ -83,61 +83,6 @@ config = VitsConfig(
     ],
 )
 
-# config = VitsConfig(
-#     model_args=vitsArgs,
-#     audio=audio_config,
-#     run_name="swissDial_proto",
-#     use_speaker_embedding=True,
-#     batch_size=32,
-#     eval_batch_size=16,
-#     batch_group_size=0,
-#     num_loader_workers=4,
-#     num_eval_loader_workers=4,
-#     run_eval=True,
-#     test_delay_epochs=-1,
-#     epochs=1000,
-#     text_cleaner="multilingual_cleaners",
-#     use_phonemes=False,
-#     phoneme_language="ch-de",
-#     phoneme_cache_path=os.path.join(output_path, "phoneme_cache"),
-#     compute_input_seq_cache=True,
-#     print_step=25,
-#     use_language_weighted_sampler=True,
-#     print_eval=False,
-#     mixed_precision=False,
-#     min_audio_len=32 * 256 * 4,
-#     max_audio_len=160000,
-#     output_path=output_path,
-#     datasets=dataset_config,
-#     characters=CharactersConfig(
-#         characters_class="TTS.tts.models.vits.VitsCharacters",
-#         pad="<PAD>",
-#         eos="<EOS>",
-#         bos="<BOS>",
-#         blank="<BLNK>",
-#         characters="!¡'(),-.:;¿?abcdefghijklmnopqrstuvwxyzµßàáâäåæçèéêëìíîïñòóôöùúûüąćęłńœśşźżƒабвгдежзийклмнопрстуфхцчшщъыьэюяёєіїґӧ «°±µ»$%&‘’‚“`”„",
-#         punctuations="!¡'(),-.:;¿? ",
-#         phonemes=None,
-#     ),
-#     test_sentences=[
-#         [
-#             "It took me quite a long time to develop a voice, and now that I have it I'm not going to be silent.",
-#             "mary_ann",
-#             None,
-#             "en_US",
-#         ],
-#         [
-#             "Il m'a fallu beaucoup de temps pour d\u00e9velopper une voix, et maintenant que je l'ai, je ne vais pas me taire.",
-#             "ezwa",
-#             None,
-#             "fr_FR",
-#         ],
-#         ["Ich finde, dieses Startup ist wirklich unglaublich.", "eva_k", None, "de_DE"],
-#         ["Я думаю, что этот стартап действительно удивительный.", "oblomov", None, "ru_RU"],
-#         ["Das isch e tescht.", "gr", None, "ch_DE"],
-#     ],
-# )
-
 # force the convertion of the custom characters to a config attribute
 config.from_dict(config.to_dict())
 
