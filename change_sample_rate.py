@@ -3,8 +3,8 @@ import soundfile as sf
 import os
 from tqdm import tqdm
 
-in_path = "data/slowsoft/wavs/"
-out_path = "data/slowsoft_1600/wavs/"
+in_path = "data/swissDial/wavs/"
+out_path = "data/swissDial_1600/wavs/"
 
 for file in tqdm(os.listdir("data/slowsoft/wavs/")):
     audio, sr = sf.read(in_path + file)
