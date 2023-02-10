@@ -97,7 +97,7 @@ config = VitsConfig(
         phonemes=None,
     ),
     test_sentences=[
-        ["Das isch e tescht.", "gr", None, "ch_DE"],
+        ["Das isch e tescht."],
     ],
 )
 
