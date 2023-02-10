@@ -56,12 +56,14 @@ vitsArgs = VitsArgs(
     # embedded_language_dim=4,
     use_speaker_embedding=True,
     use_sdp=False,
+    speaker_encoder_config_path=f"{PretrainedModelPath}config_se.json",
+    speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth"
 )
 
 config = VitsConfig(
     model_args=vitsArgs,
     audio=audio_config,
-    run_name="swissDial_proto",
+    run_name="swissDial",
     use_speaker_embedding=True,
     batch_size=32,
     eval_batch_size=16,
