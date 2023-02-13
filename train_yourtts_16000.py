@@ -57,7 +57,8 @@ vitsArgs = VitsArgs(
     use_sdp=False,
     use_d_vector_file=True,
     speaker_encoder_config_path=f"{PretrainedModelPath}config_se.json",
-    speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth"
+    speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth",
+    d_vector_file="./d_vector_file.json"
 )
 
 config = VitsConfig(
