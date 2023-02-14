@@ -1,8 +1,8 @@
 from TTS.api import TTS
 
 tts = TTS(
-    model_path="./swissDial_16000-February-14-2023_12+38AM-6c9072e/best_model.pth",
-    config_path="./swissDial_16000-February-14-2023_12+38AM-6c9072e/config.json",
+    model_path="./swissDial_16000-February-14-2023_10+35AM-9002191/best_model.pth",
+    config_path="./swissDial_16000-February-14-2023_10+35AM-9002191/config.json",
     progress_bar=True, gpu=False)
 
 # tts.tts_to_file("Das isch en Tescht.", speaker="ag", file_path="output.wav")
