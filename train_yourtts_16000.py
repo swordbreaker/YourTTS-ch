@@ -48,6 +48,7 @@ audio_config = VitsAudioConfig(
     num_mels=80,
     mel_fmin=0,
     mel_fmax=None,
+    fft_size=1024,
 )
 
 vitsArgs = VitsArgs(
@@ -55,20 +56,23 @@ vitsArgs = VitsArgs(
     use_speaker_embedding=True,
     use_sdp=True,
     use_d_vector_file=True,
+    d_vector_dim=512,
     speaker_encoder_config_path=f"{PretrainedModelPath}config_se.json",
     speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth",
     d_vector_file="./d_vector_file.json",
+    num_layers_text_encoder=10,
+    resblock_type_decoder="1",
+    use_speaker_encoder_as_loss=True,
 )
 
 config = VitsConfig(
     model_args=vitsArgs,
-    use_d_vector_file=True,
     audio=audio_config,
     run_name="swissDial_16000",
     use_speaker_embedding=False,
     batch_size=32,
     eval_batch_size=16,
-    batch_group_size=0,
+    batch_group_size=48,
     num_loader_workers=4,
     num_eval_loader_workers=4,
     run_eval=True,
@@ -100,6 +104,10 @@ config = VitsConfig(
     test_sentences=[
         ["Das isch e tescht."],
     ],
+    use_weighted_sampler=True,
+    weighted_sampler_attrs={"speaker_name": 1.0},
+    weighted_sampler_multipliers={},
+    speaker_encoder_loss_alpha=9.0,
 )
 
 # force the convertion of the custom characters to a config attribute
