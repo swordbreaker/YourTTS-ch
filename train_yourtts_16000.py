@@ -69,7 +69,6 @@ config = VitsConfig(
     model_args=vitsArgs,
     audio=audio_config,
     run_name="swissDial_16000",
-    use_speaker_embedding=False,
     batch_size=32,
     eval_batch_size=16,
     batch_group_size=48,
@@ -127,10 +126,12 @@ train_samples, eval_samples = load_tts_samples(
 
 # init speaker manager for multi-speaker training
 # it maps speaker-id to speaker-name in the model and data-loader
-speaker_manager = SpeakerManager()
-speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
 
-config.model_args.num_speakers = speaker_manager.num_speakers
+
+# speaker_manager = SpeakerManager()
+# speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
+
+# config.model_args.num_speakers = speaker_manager.num_speakers
 
 # language_manager = LanguageManager(config=config)
 # language_manager.name_to_id
@@ -144,7 +145,8 @@ config.model_args.num_speakers = speaker_manager.num_speakers
 tokenizer, config = TTSTokenizer.init_from_config(config)
 
 # init model
-model = Vits(config, ap, tokenizer, speaker_manager)
+model = Vits.init_from_config(config)
+# model = Vits(config, ap, tokenizer, speaker_manager)
 
 # init the trainer and 🚀
 trainer = Trainer(
