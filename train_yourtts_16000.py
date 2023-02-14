@@ -53,7 +53,7 @@ audio_config = VitsAudioConfig(
 
 vitsArgs = VitsArgs(
     use_language_embedding=False,
-    use_speaker_embedding=True,
+    # use_speaker_embedding=True,
     use_sdp=True,
     use_d_vector_file=True,
     d_vector_dim=512,
