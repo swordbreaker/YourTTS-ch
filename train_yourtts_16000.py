@@ -77,10 +77,10 @@ DATASETS_CONFIG_LIST = [swissDial_config]
 
 ### Extract speaker embeddings
 SPEAKER_ENCODER_CHECKPOINT_PATH = (
-    speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth"
+    f"{PretrainedModelPath}model_se.pth"
 )
 
-SPEAKER_ENCODER_CONFIG_PATH = speaker_encoder_config_path=f"{PretrainedModelPath}config_se.json"
+SPEAKER_ENCODER_CONFIG_PATH = f"{PretrainedModelPath}config_se.json"
 
 D_VECTOR_FILES = []  # List of speaker embeddings/d-vectors to be used during the training
 
