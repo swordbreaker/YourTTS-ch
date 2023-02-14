@@ -1,4 +1,6 @@
 import os
+from sys import platform
+
 
 import torch
 from trainer import Trainer, TrainerArgs
@@ -10,6 +12,12 @@ from TTS.tts.configs.vits_config import VitsConfig
 from TTS.tts.datasets import load_tts_samples
 from TTS.tts.models.vits import CharactersConfig, Vits, VitsArgs, VitsAudioConfig
 from TTS.utils.downloaders import download_vctk
+
+PretrainedModelPath = ""
+if platform == "linux" or platform == "linux2":
+    PretrainedModelPath = "/scicore/home/graber0001/perity98/.local/share/tts/tts_models--multilingual--multi-dataset--your_tts/"
+else:
+    PretrainedModelPath = "C:/Users/tobia/AppData/Local/tts/tts_models--multilingual--multi-dataset--your_tts/"
 
 torch.set_num_threads(24)
 
@@ -69,9 +77,10 @@ DATASETS_CONFIG_LIST = [swissDial_config]
 
 ### Extract speaker embeddings
 SPEAKER_ENCODER_CHECKPOINT_PATH = (
-    "https://github.com/coqui-ai/TTS/releases/download/speaker_encoder_model/model_se.pth.tar"
+    speaker_encoder_model_path=f"{PretrainedModelPath}model_se.pth"
 )
-SPEAKER_ENCODER_CONFIG_PATH = "https://github.com/coqui-ai/TTS/releases/download/speaker_encoder_model/config_se.json"
+
+SPEAKER_ENCODER_CONFIG_PATH = speaker_encoder_config_path=f"{PretrainedModelPath}config_se.json"
 
 D_VECTOR_FILES = []  # List of speaker embeddings/d-vectors to be used during the training
 
